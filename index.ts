@@ -35,20 +35,18 @@ const io = new Server(server, {
     credentials: true,
   },
 });
-const mysql = require('mysql');
-const connection = mysql.createConnection({
-  host     : 'db-mysql-backgammon-99999-do-user-11834163-0.b.db.ondigitalocean.com',
-  user     : 'doadmin',
-  password : 'AVNS_m4GblO-IQda4KisB8hn',
-  database : 'defaultdb'
-});
-connection.connect((err: { message: string; }) => {
-  if (err) {
-      console.log('Connection error message: ' + err.message);
-      return;
-  }
-  console.log('Connected!')
-});
+async function initialize() {
+  const config = require('config.json');
+  const mysql = require('mysql2/promise');
+  const { Sequelize } = require('sequelize');
+  const { host, port, user, password, database } = config.database;
+  const connection = await mysql.createConnection({ host, port, user, password });
+  await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
+  
+  // connect to db
+  const sequelize = new Sequelize(database, user, password, { dialect: 'mysql' });
+}
+
 
 // database
 const db = require("./app/models");
