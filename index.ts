@@ -7,7 +7,6 @@ import { filter, map, result } from "lodash";
 import NetworkingManager from "./networking";
 import { Actions, Errors } from "./networking/constants";
 import { IError, Room, RoomInfo } from "./networking/types";
-
 import { getUniqueId, generateError } from "./utils";
 import { hashPassword, doesPasswordMatchHash } from "./utils/security-utils";
 import { waitForDebugger } from "inspector";
@@ -35,6 +34,20 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
     credentials: true,
   },
+});
+const mysql = require('mysql');
+const connection = mysql.createConnection({
+  host     : 'db-mysql-backgammon-99999-do-user-11834163-0.b.db.ondigitalocean.com',
+  user     : 'doadmin',
+  password : 'AVNS_m4GblO-IQda4KisB8hn',
+  database : 'defaultdb'
+});
+connection.connect((err: { message: string; }) => {
+  if (err) {
+      console.log('Connection error message: ' + err.message);
+      return;
+  }
+  console.log('Connected!')
 });
 
 // database
