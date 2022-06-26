@@ -43,7 +43,8 @@ const Role = db.role;
 // db.create_db();
 db.sequelize.sync().then(() => {
   initial();
-});
+})
+.catch((error: any) => console.log(error));
 
 
 app.get("/", (req, res) => {
