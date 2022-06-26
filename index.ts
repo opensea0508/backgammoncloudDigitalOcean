@@ -44,8 +44,6 @@ const Role = db.role;
 db.sequelize.sync().then(() => {
   initial();
 })
-.catch((error: any) => console.log(error));
-
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, '../index.html'));
