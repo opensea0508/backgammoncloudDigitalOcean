@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "tsc --project ./",
-    "start": "ts-node ./index.ts"
+    "start": "ts-node ./index.ts",
+    "dev": "nodemon --watch \"app/**\" --ext \"js, ts,json\" --ignore \"src/*.spec.ts\" --exec \"ts-node ./index.ts\""
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",

@@ -26,6 +26,8 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname + '/'))
+app.use(express.static('build'))
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -55,13 +57,12 @@ const Role = db.role;
 db.sequelize.sync().then(() => {
   initial();
 })
-
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
+  res.sendFile(path.join(__dirname, './build/index.html'));
 });
 
 //set port, listen for requests
-const PORT = 80;
+const PORT = 3001;
 
 //TODO: put this somewhere else
 
