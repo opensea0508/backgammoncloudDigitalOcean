@@ -28,7 +28,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/'))
 app.use(express.static('build'))
-app.set('port', (process.env.PORT));
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -50,7 +49,7 @@ async function initialize() {
   const sequelize = new Sequelize(database, user, password, { dialect: 'mysql' });
 }
 
-
+const PORT =  process.env.PORT || 3001;
 // database
 const db = require("./app/models");
 const Role = db.role;
@@ -61,6 +60,7 @@ db.sequelize.sync().then(() => {
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, './build/index.html'));
 });
+
 
 //set port, listen for requests
 
@@ -275,13 +275,12 @@ export function afterGuestOut(removeId: string | undefined) {
   }
 }
 server.on('listening',function(){
-  console.log(process.env.PORT);
+  console.log(PORT);
 });
-server.listen(3001);
 
-// server.listen(PORT, () => {
-//   console.log(`The application is listening on port ${PORT}!`);
-// });
+server.listen(PORT, () => {
+  console.log(`The application is listening on port ${PORT}!`);
+});
 
 function initial() {
   Role.create({
