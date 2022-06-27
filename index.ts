@@ -28,6 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/'))
 app.use(express.static('build'))
+app.set('port', (process.env.PORT));
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -275,9 +276,9 @@ export function afterGuestOut(removeId: string | undefined) {
   }
 }
 server.on('listening',function(){
-  console.log('ok, server is running');
+  console.log(process.env.PORT);
 });
-server.listen(4000);
+server.listen(process.env.PORT);
 
 // server.listen(PORT, () => {
 //   console.log(`The application is listening on port ${PORT}!`);
