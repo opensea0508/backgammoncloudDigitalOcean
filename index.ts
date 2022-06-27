@@ -61,7 +61,7 @@ app.get("/", (req, res) => {
 });
 
 //set port, listen for requests
-const PORT = 3001;
+const PORT = 80;
 
 //TODO: put this somewhere else
 
