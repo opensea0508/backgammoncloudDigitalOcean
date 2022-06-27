@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import http from "http";
+import 'dotenv/config';
 
 import { Server, Socket } from "socket.io";
 import { filter, map, result } from "lodash";
