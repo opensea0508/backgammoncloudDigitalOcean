@@ -2,7 +2,7 @@ module.exports = {
   host: "sql5.freemysqlhosting.net",
   user: "sql5502526",
   password: "qMpy5CqUl6",
-  database: "backgammondb",
+  database: "sql5502526",
   port: "3306",
   dialect: "mysql",
   pool: {
