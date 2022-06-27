@@ -58,7 +58,7 @@ const Role = db.role;
 db.sequelize.sync().then(() => {
   initial();
 })
-app.get("/", (req, res) => {
+app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, './build/index.html'));
 });
 
