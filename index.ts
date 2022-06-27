@@ -63,7 +63,6 @@ app.get("/", (req, res) => {
 });
 
 //set port, listen for requests
-const PORT = 3001;
 
 //TODO: put this somewhere else
 
@@ -278,7 +277,7 @@ export function afterGuestOut(removeId: string | undefined) {
 server.on('listening',function(){
   console.log(process.env.PORT);
 });
-server.listen(process.env.PORT);
+server.listen(3001);
 
 // server.listen(PORT, () => {
 //   console.log(`The application is listening on port ${PORT}!`);
