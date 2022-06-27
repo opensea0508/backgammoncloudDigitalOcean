@@ -34,7 +34,6 @@
     "typescript": "^4.2.4"
   },
   "scripts": {
-    "build": "tsc --project ./",
     "start": "ts-node ./index.ts"
   },
   "devDependencies": {
