@@ -27,7 +27,7 @@ export interface GameState {
   pips: Pip[];
   hitSpace: PlayerBuckets;
   bearOff: PlayerBuckets;
-  winner_role: string;
+  // winner_role: string;
 }
 
 export type ConsequenceType =
