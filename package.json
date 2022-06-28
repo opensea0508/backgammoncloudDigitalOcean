@@ -1,5 +1,5 @@
 {
-  "proxy": "localhost:3001",
+  "proxy": "http://localhost:3001",
   "name": "backgammon-backend",
   "version": "1.0.0",
   "main": "index.js",
