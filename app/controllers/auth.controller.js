@@ -1,8 +1,9 @@
 const config = require("../config/auth.config");
 const db = require("../models");
+const numberOfLogin = require("../config/numberOfLogin");
+
 const User = db.user;
 const Role = db.role;
-
 const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
@@ -39,6 +40,7 @@ exports.signup = async (req, res) => {
       roleId: result,
     }) 
     .then(user => {
+          numberOfLogin.increaseNumber();
           var token = jwt.sign({ id: user.id }, config.secret, {
             expiresIn: 86400 // 24 hours
           });
@@ -50,7 +52,8 @@ exports.signup = async (req, res) => {
             gender: user.gender,
             birthday: user.birthday,
             accessToken: token,
-            message: "User registered successfully!"
+            message: "User registered successfully!",
+            // numberOfLogin: numberOfLogin.number
           });
     })
     .catch(err => {
@@ -87,6 +90,7 @@ exports.signin = (req, res) => {
         });
       }
 
+      
       var token = jwt.sign({ id: user.id }, config.secret, {
         expiresIn: 86400 // 24 hours
       });
@@ -104,6 +108,7 @@ exports.signin = (req, res) => {
         attributes: ['name']
       })
       .then(role => {
+        numberOfLogin.increaseNumber();
         authority = "ROLE_" + role.name.toUpperCase();
         console.log("----------------authority-----------------",authority);
         res.status(200).send({
@@ -114,7 +119,8 @@ exports.signin = (req, res) => {
           gender: user.gender,
           birthday: user.birthday,
           role: authority,
-          accessToken: token
+          accessToken: token,
+          // numberOfLogin:numberOfLogin.number
         });
       });
 
