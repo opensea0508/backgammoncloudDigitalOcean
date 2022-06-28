@@ -10,6 +10,7 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 exports.signup = async (req, res) => {
+  console.log("==============fdsfdffds=========");
   // Save User to Database
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');

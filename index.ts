@@ -38,17 +38,18 @@ const io = new Server(server, {
     credentials: true,
   },
 });
-async function initialize() {
-  const config = require('config.json');
-  const mysql = require('mysql2/promise');
-  const { Sequelize } = require('sequelize');
-  const { host, port, user, password, database } = config.database;
-  const connection = await mysql.createConnection({ host, port, user, password });
-  await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
+
+// async function initialize() {
+//   const config = require('config.json');
+//   const mysql = require('mysql2/promise');
+//   const { Sequelize } = require('sequelize');
+//   const { host, port, user, password, database } = config.database;
+//   const connection = await mysql.createConnection({ host, port, user, password });
+//   await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
   
-  // connect to db
-  const sequelize = new Sequelize(database, user, password, { dialect: 'mysql' });
-}
+//   // connect to db
+//   const sequelize = new Sequelize(database, user, password, { dialect: 'mysql' });
+// }
 
 const PORT =  process.env.PORT || 3001;
 // database

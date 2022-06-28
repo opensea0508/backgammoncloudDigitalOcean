@@ -14,7 +14,6 @@
 
 // };
 
-
 module.exports = {
   host: "sql5.freemysqlhosting.net",
   user: "sql5502526",
@@ -28,5 +27,4 @@ module.exports = {
     acquire: 30000,
     idle: 10000
   },
-
 };
