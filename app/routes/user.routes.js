@@ -14,7 +14,7 @@ module.exports = function(app) {
 
   app.get("/api/user", [authJwt.verifyToken], controller.userBoard);
 
-  app.get("/api/users", [authJwt.verifyToken], controller.users);
+  app.get("/api/users", controller.users);
 
   app.get(
     "/api/admin",
