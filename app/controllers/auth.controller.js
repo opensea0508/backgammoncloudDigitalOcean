@@ -1,6 +1,6 @@
 const config = require("../config/auth.config");
 const db = require("../models");
-const numberOfLogin = require("../config/numberOfLogin");
+// const numberOfLogin = require("../config/numberOfLogin");
 
 const User = db.user;
 const Role = db.role;
@@ -40,7 +40,7 @@ exports.signup = async (req, res) => {
       roleId: result,
     }) 
     .then(user => {
-          numberOfLogin.increaseNumber();
+          // numberOfLogin.increaseNumber();
           var token = jwt.sign({ id: user.id }, config.secret, {
             expiresIn: 86400 // 24 hours
           });
@@ -108,7 +108,7 @@ exports.signin = (req, res) => {
         attributes: ['name']
       })
       .then(role => {
-        numberOfLogin.increaseNumber();
+        // numberOfLogin.increaseNumber();
         authority = "ROLE_" + role.name.toUpperCase();
         console.log("----------------authority-----------------",authority);
         res.status(200).send({
