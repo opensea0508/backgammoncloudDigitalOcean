@@ -38,9 +38,20 @@ exports.signup = async (req, res) => {
       loss_time: "0",
       roleId: result,
     }) 
-    .then(result => {
-          // res.send({ message: user });
-          res.send({ message: "User registered successfully!" });      
+    .then(user => {
+          var token = jwt.sign({ id: user.id }, config.secret, {
+            expiresIn: 86400 // 24 hours
+          });
+          res.status(200).send({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            country: user.country,
+            gender: user.gender,
+            birthday: user.birthday,
+            accessToken: token,
+            message: "User registered successfully!"
+          });
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
