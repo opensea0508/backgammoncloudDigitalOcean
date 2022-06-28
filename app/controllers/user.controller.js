@@ -58,7 +58,7 @@ exports.getCountryInfo = async (username) => {
 }
 
 
-exports.users = (_req, res) => {
+exports.users = (req, res) => {
   console.log("-------------------------backend users----------------------------");
   User.findAll({
     where: { roleId: 1},
