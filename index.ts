@@ -58,9 +58,6 @@ const Role = db.role;
 db.sequelize.sync().then(() => {
   initial();
 })
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, './build/index.html'));
-});
 
 
 //set port, listen for requests
@@ -70,6 +67,10 @@ app.get("/*", (req, res) => {
 // routes
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, './build/index.html'));
+});
 const controller = require("./app/controllers/user.controller");
 
 
