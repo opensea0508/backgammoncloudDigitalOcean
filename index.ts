@@ -6,7 +6,7 @@ import 'dotenv/config';
 import { Server, Socket } from "socket.io";
 import { filter, map, result } from "lodash";
 import NetworkingManager from "./networking";
-import { Actions, Errors } from "./networking/constants";
+import { Actions, Errors, Rooms } from "./networking/constants";
 import { IError, Room, RoomInfo } from "./networking/types";
 import { getUniqueId, generateError } from "./utils";
 import { hashPassword, doesPasswordMatchHash } from "./utils/security-utils";
@@ -14,6 +14,7 @@ import { waitForDebugger } from "inspector";
 import { clear } from "console";
 import { createForOf } from "typescript";
 import path from "path";
+import { rootCertificates } from "tls";
 
 var corsOptions = {
   origin: "*"
@@ -87,27 +88,35 @@ const getAllRoomsFromManagers = async (managers: NetworkingManager[]) => {
       hostUsername: m.hostUsername || "",
       guestUsername: m.guestUsername || "",
       hostCountry: m.hostUsername? await controller.getCountryInfo(m.hostUsername): "",
-      guestCountry: m.guestUsername? await controller.getCountryInfo(m.guestUsername): ""
+      guestCountry: m.guestUsername? await controller.getCountryInfo(m.guestUsername): "",
+      status:m.roomStatus
     }
     rr.push(temp);
   }
   return rr;
 }
 
-const getPendingRoomsFromManagers = (managers: NetworkingManager[]): Room[] =>
-  map(
-    filter(managers, (m) => (m.roomStatus === "WAITING_FOR_GUEST" || m.roomStatus === "ROOM_CREATED")),
-    (m) => ({
+const getPendingRoomsFromManagers = async (managers: NetworkingManager[]) => {
+  console.log(managers.length);
+  let rr: Room[] = [];
+  for (let i = 0; i < managers.length; i++) {
+    let m = managers[i];
+    let temp = {
       id: m.id,
-      name: m.roomName,
-    })
-  );
+      name: m.roomName
+    }
+    rr.push(temp);
+  }
+  return rr;
+
+}
 
 io.on("connection", (socket: Socket) => {
   console.log("socket conncted");
-  socket.on(Actions.GET_ROOMS, () => {
-    const rooms = getPendingRoomsFromManagers(networkManagers);
-
+  socket.on(Actions.GET_ROOMS, async() => {
+    console.log(networkManagers.length);
+    const rooms = await getPendingRoomsFromManagers(networkManagers);
+    console.log(rooms);
     socket.emit(Actions.ROOMS_FETCHED, {
       rooms,
     });

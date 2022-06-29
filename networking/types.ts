@@ -8,6 +8,7 @@ export interface RoomInfo {
   guestUsername: string;
   hostCountry: any;
   guestCountry: any;
+  status: string;
 }
 
 export interface Room {
