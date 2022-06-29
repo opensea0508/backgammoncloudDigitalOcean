@@ -104,6 +104,7 @@ const getPendingRoomsFromManagers = (managers: NetworkingManager[]): Room[] =>
   );
 
 io.on("connection", (socket: Socket) => {
+  console.log("socket conncted");
   socket.on(Actions.GET_ROOMS, () => {
     const rooms = getPendingRoomsFromManagers(networkManagers);
 
