@@ -226,6 +226,10 @@ io.on("connection", (socket: Socket) => {
     }
     
   });
+
+  socket.on('disconnect', function() {
+    console.log('Got disconnect!');
+ });
 });
 
 export function clearRoom(removeId: string | undefined) {
