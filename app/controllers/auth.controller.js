@@ -144,12 +144,14 @@ exports.signin = (req, res) => {
 };
 
 exports.logout = (req, res) => {
+  console.log(req.body.username.username);
   for (var i = 0; i < usernames.length; i++){
-    if(usernames[i] === req.body.username) {
+    if(usernames[i] == req.body.username.username) {
       usernames.splice(i, 1);
     }
   }
-  res.status(200).send({ message: "log out successfully"});
+  console.log(usernames);
+  res.status(200).send({ message: "log out successfully" });
 };
 
 
