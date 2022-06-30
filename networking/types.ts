@@ -14,6 +14,7 @@ export interface RoomInfo {
 export interface Room {
   id: string;
   name: string;
+  status: string;
 }
 
 export type NetworkStatus = "NOT_STARTED" | "WAITING_FOR_GUEST" | "STARTED" | "ROOM_CREATED";

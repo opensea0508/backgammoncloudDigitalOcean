@@ -103,7 +103,8 @@ const getPendingRoomsFromManagers = async (managers: NetworkingManager[]) => {
     let m = managers[i];
     let temp = {
       id: m.id,
-      name: m.roomName
+      name: m.roomName,
+      status: m.roomStatus
     }
     rr.push(temp);
   }
