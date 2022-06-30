@@ -100,13 +100,15 @@ const getPendingRoomsFromManagers = async (managers: NetworkingManager[]) => {
   console.log(managers.length);
   let rr: Room[] = [];
   for (let i = 0; i < managers.length; i++) {
-    let m = managers[i];
-    let temp = {
-      id: m.id,
-      name: m.roomName,
-      status: m.roomStatus
+    if((managers[i].roomStatus === "ROOM_CREATED") || (managers[i].roomStatus === "WAITING_FOR_GUEST")) {
+      let m = managers[i];
+      let temp = {
+        id: m.id,
+        name: m.roomName,
+        status: m.roomStatus
+      }
+      rr.push(temp);
     }
-    rr.push(temp);
   }
   return rr;
 
