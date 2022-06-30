@@ -73,9 +73,9 @@ export default class NetworkingManager {
       roomName: this.roomName,
     });
 
-    hostPlayer.on("disconnect", () => {
-      this.roomStatus = "NOT_STARTED";
-    });
+    // hostPlayer.on("disconnect", () => {
+    //   this.roomStatus = "NOT_STARTED";
+    // });
   }
 
   getSocketsWithRole(): SocketWithRole[] {

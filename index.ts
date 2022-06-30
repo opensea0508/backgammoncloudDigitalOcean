@@ -97,9 +97,9 @@ const getAllRoomsFromManagers = async (managers: NetworkingManager[]) => {
 }
 
 const getPendingRoomsFromManagers = async (managers: NetworkingManager[]) => {
-  console.log(managers.length);
   let rr: Room[] = [];
   for (let i = 0; i < managers.length; i++) {
+    console.log("this is a room status====", managers[i].roomStatus);
     if((managers[i].roomStatus === "ROOM_CREATED") || (managers[i].roomStatus === "WAITING_FOR_GUEST")) {
       let m = managers[i];
       let temp = {
@@ -110,6 +110,7 @@ const getPendingRoomsFromManagers = async (managers: NetworkingManager[]) => {
       rr.push(temp);
     }
   }
+  console.log("this is a length of available rooms to be returned frontend", rr.length);
   return rr;
 
 }
@@ -117,7 +118,7 @@ const getPendingRoomsFromManagers = async (managers: NetworkingManager[]) => {
 io.on("connection", (socket: Socket) => {
   console.log("socket conncted");
   socket.on(Actions.GET_ROOMS, async() => {
-    console.log(networkManagers.length);
+    console.log("this is a networkManagers's length in Actions.GET_ROOMS.======", networkManagers.length);
     returnAvailableRooms();
   });
 
@@ -244,10 +245,11 @@ io.on("connection", (socket: Socket) => {
 
 export function clearRoom(removeId: string | undefined) {
   console.log("this is clearRoom");
+
   for(let i = 0; i < networkManagers.length; i++) {
-    console.log(networkManagers[i].id);
     if(networkManagers[i].id === removeId) {
-      // networkManagers.splice(i, 1);
+      console.log("networkManagers[i].id", networkManagers[i].id);
+      console.log("removeId", removeId);
       networkManagers[i].roomStatus = "ROOM_CREATED";
       networkManagers[i].hostPlayer = undefined;
       networkManagers[i].guestPlayer = undefined;
@@ -256,6 +258,7 @@ export function clearRoom(removeId: string | undefined) {
       networkManagers[i].gameManager = undefined;
     }
   }
+
 }
 
 export function deleteRoom(removeId: string | undefined) {

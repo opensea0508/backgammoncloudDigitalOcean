@@ -122,7 +122,7 @@ exports.signin = (req, res) => {
         .then(role => {
           // numberOfLogin.increaseNumber();
           authority = "ROLE_" + role.name.toUpperCase();
-          console.log("----------------authority-----------------",authority);
+          console.log("----------------authority-----------------", authority);
           res.status(200).send({
             id: user.id,
             username: user.username,
