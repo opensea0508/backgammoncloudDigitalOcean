@@ -174,8 +174,12 @@ io.on("connection", (socket: Socket) => {
 
       const ret = await networkManager.joinPlayer(socket, username);
       const allRooms = await getAllRoomsFromManagers(networkManagers);
+      const rooms = await getPendingRoomsFromManagers(networkManagers);
       io.emit(Actions.ALL_ROOMS_FETCHED, {
         allRooms,
+      });
+      io.emit(Actions.ROOMS_FETCHED, {
+        rooms,
       });
 
     } catch (err) {
