@@ -116,11 +116,7 @@ io.on("connection", (socket: Socket) => {
   console.log("socket conncted");
   socket.on(Actions.GET_ROOMS, async() => {
     console.log(networkManagers.length);
-    const rooms = await getPendingRoomsFromManagers(networkManagers);
-    console.log(rooms);
-    socket.emit(Actions.ROOMS_FETCHED, {
-      rooms,
-    });
+    returnAvailableRooms();
   });
 
   socket.on(Actions.GET_ALL_ROOMS, async () => {
@@ -137,7 +133,6 @@ io.on("connection", (socket: Socket) => {
 
     console.log("ADMIN WANTS TO CREATE A ROOM", roomName);
 
-
     const networkManager = new NetworkingManager(
       io,
       id,
@@ -146,6 +141,7 @@ io.on("connection", (socket: Socket) => {
     );
 
     networkManagers.push(networkManager);
+    returnAvailableRooms();
   });
 
   socket.on(Actions.DELETE_ROOM, async (payload: any) => {
@@ -156,6 +152,7 @@ io.on("connection", (socket: Socket) => {
     socket.emit(Actions.ALL_ROOMS_FETCHED, {
       allRooms,
     });
+    returnAvailableRooms();
   });
 
   socket.on(Actions.JOIN_ROOM, async (payload: any) => {
@@ -174,14 +171,10 @@ io.on("connection", (socket: Socket) => {
 
       const ret = await networkManager.joinPlayer(socket, username);
       const allRooms = await getAllRoomsFromManagers(networkManagers);
-      const rooms = await getPendingRoomsFromManagers(networkManagers);
       io.emit(Actions.ALL_ROOMS_FETCHED, {
         allRooms,
       });
-      io.emit(Actions.ROOMS_FETCHED, {
-        rooms,
-      });
-
+      returnAvailableRooms();
     } catch (err) {
       const error = err as IError;
       socket.emit(Actions.ERROR_OCCURRED, error);
@@ -238,6 +231,7 @@ io.on("connection", (socket: Socket) => {
         });
       }
     }
+    returnAvailableRooms();
     
   });
 
@@ -303,6 +297,13 @@ server.on('listening',function(){
 server.listen(PORT, () => {
   console.log(`The application is listening on port ${PORT}!`);
 });
+
+async function returnAvailableRooms() {
+  const rooms = await getPendingRoomsFromManagers(networkManagers);
+  io.emit(Actions.ROOMS_FETCHED, {
+    rooms,
+  });
+}
 
 function initial() {
   Role.create({
