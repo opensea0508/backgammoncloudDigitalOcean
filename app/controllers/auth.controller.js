@@ -63,6 +63,13 @@ exports.signup = async (req, res) => {
             message: "User registered successfully!",
             // numberOfLogin: numberOfLogin.number
           });
+          let userInfo = {username: user.username, accessToken: token};
+          for( let i = 0; i < userInfos.length; i ++) {
+            if(userInfos[i].username === userInfo.username) {
+              userInfos.splice(i, 1);
+            }
+          }
+          addUserInfo(userInfo);
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
