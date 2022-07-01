@@ -8,14 +8,12 @@ const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const { BOOLEAN } = require("sequelize");
 
-let usernames = [];
-function addUser(user) {
-    usernames.push(user);
-}
-function searchUser(user) {
-    if(usernames.indexOf(user) < 0) return false;
-    else return true;
+let userInfos = [];
+function addUserInfo(userInfo) {
+    userInfos.push(userInfo);
+    console.log("this is a userInfos==========" ,userInfos);
 }
 
 exports.signup = async (req, res) => {
@@ -72,8 +70,6 @@ exports.signup = async (req, res) => {
 };
 
 exports.signin = (req, res) => {
-  if(searchUser(req.body.username)) res.status(500).send({message:"Already loged in"});
-  else {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -102,7 +98,6 @@ exports.signin = (req, res) => {
           });
         }
   
-        addUser(req.body.username);
         var token = jwt.sign({ id: user.id }, config.secret, {
           expiresIn: 86400 // 24 hours
         });
@@ -135,23 +130,39 @@ exports.signin = (req, res) => {
             // numberOfLogin:numberOfLogin.number
           });
         });
-  
+        let userInfo = {username: user.username, accessToken: token};
+        for( let i = 0; i < userInfos.length; i ++) {
+          if(userInfos[i].username === userInfo.username) {
+            userInfos.splice(i, 1);
+          }
+        }
+        addUserInfo(userInfo);
       })
       .catch(err => {
         res.status(500).send({ message: err.message });
       });
-  }
 };
 
 exports.logout = (req, res) => {
-  console.log(req.body.username.username);
-  for (var i = 0; i < usernames.length; i++){
-    if(usernames[i] == req.body.username.username) {
-      usernames.splice(i, 1);
+  console.log("this is req.body.username ===================", req.body.username.accessToken);
+  for (var i = 0; i < userInfos.length; i++){
+    if(userInfos[i].accessToken == req.body.username.accessToken) {
+      userInfos.splice(i, 1);
     }
   }
-  console.log(usernames);
+  console.log("this is userInfos=================", userInfos);
   res.status(200).send({ message: "log out successfully" });
 };
+
+exports.checkAccessToken = (accessToken) => {
+  let checkValue = false;
+  for( let i = 0; i < userInfos.length; i ++) {
+    if(userInfos[i].accessToken === accessToken) {
+      checkValue = true;
+      break;
+    }
+  }
+  return checkValue;
+}
 
 

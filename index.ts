@@ -74,6 +74,7 @@ app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, './build/index.html'));
 });
 const controller = require("./app/controllers/user.controller");
+const authController = require("./app/controllers/auth.controller");
 
 
 const networkManagers: NetworkingManager[] = [];
@@ -159,28 +160,34 @@ io.on("connection", (socket: Socket) => {
   });
 
   socket.on(Actions.JOIN_ROOM, async (payload: any) => {
-    const { roomId, username } = payload;
+    const { roomId, username, accessToken } = payload;
+    const checkValue = authController.checkAccessToken(accessToken);
+    console.log("this is a checkvalue ======", checkValue);
+    if(checkValue) {
 
-    console.log("PLAYER WANTS TO JOIN A ROOM", roomId, username);
-
-    const networkManager = networkManagers.find((it) => it.id === roomId);
-
-    if (!networkManager) {
-      console.log(`Couldn't find room with id ${roomId} `);
-      return;
-    }
-
-    try {
-
-      const ret = await networkManager.joinPlayer(socket, username);
-      const allRooms = await getAllRoomsFromManagers(networkManagers);
-      io.emit(Actions.ALL_ROOMS_FETCHED, {
-        allRooms,
-      });
-      returnAvailableRooms();
-    } catch (err) {
-      const error = err as IError;
-      socket.emit(Actions.ERROR_OCCURRED, error);
+      console.log("PLAYER WANTS TO JOIN A ROOM", roomId, username);
+  
+      const networkManager = networkManagers.find((it) => it.id === roomId);
+  
+      if (!networkManager) {
+        console.log(`Couldn't find room with id ${roomId} `);
+        return;
+      }
+  
+      try {
+  
+        const ret = await networkManager.joinPlayer(socket, username);
+        const allRooms = await getAllRoomsFromManagers(networkManagers);
+        io.emit(Actions.ALL_ROOMS_FETCHED, {
+          allRooms,
+        });
+        returnAvailableRooms();
+      } catch (err) {
+        const error = err as IError;
+        socket.emit(Actions.ERROR_OCCURRED, error);
+      }
+    } else {
+      socket.emit(Actions.LOGIN_FAILURE, "");
     }
   });
 
